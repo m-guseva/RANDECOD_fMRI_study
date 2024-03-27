@@ -29,6 +29,7 @@ Scripts include:
 - `ReactionTimes.m`: Calculation of reaction times and comparison between conditions
 - `RunLengthScript.m`: Calculation of run lengths and comparison between conditions
 - `RandomnessMeasures.m`;`markovOrderBIC.m`: Calculation of conditional entropy and optimal Markov order values and comparison between conditions
+- `createPseudoRandSeq.m`: Generates pseudorandom sequences (see above)
 
 ## Imaging Analysis
 
