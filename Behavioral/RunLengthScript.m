@@ -58,7 +58,13 @@ mean_runLengths_perCondition = splitapply(@mean, mean_RunLength_perPerson, behav
 sd_runLengths_perCondition = splitapply(@std, mean_RunLength_perPerson, behavioralData.condition);
 
 %% Significance test
-[P,ANOVATAB,STATS]= anova1(mean_RunLength_perPerson', behavioralData.condition)
+[P,ANOVATAB,STATS]= anova1(mean_RunLength_perPerson', behavioralData.condition);
+
+% Effect size calculation:
+SS_between = ANOVATAB{2,2}; % Between-group sum of squares
+SS_total = ANOVATAB{4,2}; % Total sum of squares
+eta_squared = SS_between / SS_total;
+
 
 %% Fig. 3 Violin plot
 

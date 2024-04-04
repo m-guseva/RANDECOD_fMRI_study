@@ -75,8 +75,23 @@ std_proportionValue_perCondition = splitapply(@std, mean_perPerson', behavioralD
 
 
 %% Significance tests -> Is there a significant difference across conditions?
-[P,ANOVATAB,STATS]= anova1(mean_perPerson, behavioralData.condition)
-[c,m,h,gnames] = multcompare(STATS)
+[P,ANOVATAB,STATS]= anova1(mean_perPerson, behavioralData.condition);
+
+% Effect size calculation:
+SS_between = ANOVATAB{2,2}; % Between-group sum of squares
+SS_total = ANOVATAB{4,2}; % Total sum of squares
+eta_squared = SS_between / SS_total;
+
+% Post hoc multiple comparison
+[c,m,h,gnames] = multcompare(STATS);
+
+% Effect size of significant comparison 2 vs. 3:
+mean_diff = (STATS.means(2)-STATS.means(3)); % mean difference
+sd_fc = std(mean_perPerson(behavioralData.condition == 2)); % standard deviation of FC
+sd_mc = std(mean_perPerson(behavioralData.condition == 3)); % standard deviation of MC
+pooled_sd = sqrt((sd_fc^2+sd_mc^2)/2);
+
+cohens_d = mean_diff/pooled_sd;
 
 %% Fig. 3 Violin plot 
 

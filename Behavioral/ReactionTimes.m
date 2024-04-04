@@ -42,9 +42,24 @@ mean_reactionTime_perCondition = splitapply(@mean, mean_perPerson', behavioralDa
 std_reactionTime_perCondition = splitapply(@std, mean_perPerson', behavioralData.condition);
 
 %% Significance test
-[p,t,stats] = anova1(mean_perPerson, behavioralData.condition)
+[P,ANOVATAB,STATS] = anova1(mean_perPerson, behavioralData.condition);
+
+% Effect size calculation:
+SS_between = ANOVATAB{2,2}; % Between-group sum of squares
+SS_total = ANOVATAB{4,2}; % Total sum of squares
+eta_squared = SS_between / SS_total ;
+
 %Post hoc test:
-[c,m,h,gnames] = multcompare(stats)
+[c,m,h,gnames] = multcompare(STATS);
+
+% Effect size of significant comparison 1 vs. 3:
+mean_diff = (STATS.means(1)-STATS.means(3)); % mean difference
+sd_er = std(mean_perPerson(behavioralData.condition == 1)); % standard deviation of ER
+sd_mc = std(mean_perPerson(behavioralData.condition == 3)); % standard deviation of MC
+pooled_sd = sqrt((sd_er^2+sd_mc^2)/2);
+
+cohens_d = abs(mean_diff/pooled_sd);
+
 
 %% Fig. 3 Violin plot
 for i=1:3

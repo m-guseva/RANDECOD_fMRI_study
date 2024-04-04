@@ -108,6 +108,23 @@ yticks([1:5])
 
 %% Significance tests -> Is there a significant difference across conditions?
 
-[p,tbl,stats] = kruskalwallis(median_focusResponse_overRuns, behavioralData.condition)
+% Focus
+[p,tbl,stats] = kruskalwallis(median_focusResponse_overRuns, behavioralData.condition);
+SS_between = tbl{2,2}; % Between-group sum of squares
+SS_total = tbl{4,2}; % Total sum of squares
+eta_squared = SS_between / SS_total;
 
-[p,tbl,stats] = kruskalwallis(median_instructionsResponse_overRuns, behavioralData.condition)
+% Effect size 
+H = double(tbl{18}); % chi-square
+k = max(behavioralData.condition); % number of groups 
+n = length(median_focusResponse_overRuns); % number of observations
+eta_squared=abs((H-k+1)/(n-k));
+
+% Instruction Adherence
+[p,tbl,stats] = kruskalwallis(median_instructionsResponse_overRuns, behavioralData.condition);
+
+% Effect size 
+H = double(tbl{18}); % chi-square
+k = max(behavioralData.condition); % number of groups 
+n = length(median_focusResponse_overRuns); % number of observations
+eta_squared=abs((H-k+1)/(n-k));

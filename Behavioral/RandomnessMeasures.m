@@ -73,9 +73,24 @@ iqr_conditionalEntropy_perCondition = splitapply(@iqr, mean_conditionalEntropy_o
 
 
 %% Significance tests
-[p,tbl,stats] = kruskalwallis(median_markovOrder_overRuns, behavioralData.condition)
-[p,tbl,stats] = kruskalwallis(mean_conditionalEntropy_overRuns, behavioralData.condition)
 
+% Markov Order
+[p,tbl,stats] = kruskalwallis(median_markovOrder_overRuns, behavioralData.condition);
+
+% Effect size 
+H = double(tbl{18}); % chi-square
+k = max(behavioralData.condition); % number of groups 
+n = length(median_markovOrder_overRuns); % number of observations
+eta_squared=abs((H-k+1)/(n-k));
+
+% Conditional Entropy
+[p,tbl,stats] = kruskalwallis(mean_conditionalEntropy_overRuns, behavioralData.condition);
+
+% Effect size 
+H = double(tbl{18}); % chi-square
+k = max(behavioralData.condition); % number of groups 
+n = length(median_markovOrder_overRuns); % number of observations
+eta_squared=abs((H-k+1)/(n-k));
 
 %% Plots
 for i=1:3
